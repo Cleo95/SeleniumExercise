@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class HomePage:
@@ -18,4 +19,7 @@ class HomePage:
         return self.driver.find_element(*HomePage.electronicsOption)
 
     def getComputerAndAccessoriesOption(self):
-        return self.driver.find_element(*HomePage.computerAndAccessoriesOption)
+        wait = WebDriverWait(self.driver, 10)
+        computerAndAccessories = self.driver.execute_script("arguments[0].click();", wait.until(
+            EC.element_to_be_clickable(HomePage.computerAndAccessoriesOption)))
+        return computerAndAccessories

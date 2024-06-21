@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class ProductPage:
@@ -14,10 +15,14 @@ class ProductPage:
     addedToCartMessage = (By.XPATH, "//h1[@class='a-size-medium-plus a-color-base sw-atc-text a-text-bold']")
 
     def getPrice(self):
-        return self.driver.find_element(*ProductPage.price)
+        wait = WebDriverWait(self.driver, 10)
+        element = wait.until(EC.presence_of_element_located(ProductPage.price))
+        return element
 
-    def getAddToCartButtonString(self):
-        return self.driver.find_element(*ProductPage.addToCartButtonString)
+    @staticmethod
+    def getAddToCartButtonString():
+        buttonString = ProductPage.addToCartButtonString
+        return buttonString
 
     def getAddToCartButton(self):
         return self.driver.find_element(*ProductPage.addToCartButton)

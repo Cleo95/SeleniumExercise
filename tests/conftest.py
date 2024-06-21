@@ -19,7 +19,7 @@ def setup(request):
     options = Options()
     options.add_experimental_option("detach", True)
 
-    service_obj = Service()
+    service_obj = Service('C:/Users/kleovouc/Documents/chromedriver-win64/chromedriver.exe')
     if browser_name == "chrome":
         driver = webdriver.Chrome(service=service_obj, options=options)
     elif browser_name == "firefox":
