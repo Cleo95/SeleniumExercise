@@ -1,6 +1,7 @@
 import inspect
 import logging
 
+import allure
 import pytest
 from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
@@ -47,7 +48,11 @@ class BaseClass:
     def product_price(self, element):
 
         assert element is not None, "Price element not found."
-
         price_text = self.driver.execute_script("return arguments[0].textContent;", element).strip()
         print(f"The price of the product is: {price_text}")
         return price_text
+
+    def capture_screenshot(self, name):
+        screenshot_path = f"reports/allure-results/{name}.png"
+        self.driver.save_screenshot(screenshot_path)
+        allure.attach.file(screenshot_path, name=name, attachment_type=allure.attachment_type.PNG)

@@ -12,14 +12,21 @@ class HomePage:
     electronicsOption = (By.XPATH, "//a[@class='hmenu-item']//div[text()='Electronics']")
     computerAndAccessoriesOption = (By.XPATH, "//a[normalize-space()='Computers & Accessories']")
 
+    def load(self):
+        self.driver.get("https://www.amazon.com/")
+
     def getAllNavBar(self):
-        return self.driver.find_element(*HomePage.selectAll)
+        wait = WebDriverWait(self.driver, 15)
+        allNavBar = wait.until(EC.presence_of_element_located(HomePage.selectAll))
+        return allNavBar
 
     def getElectronicsOption(self):
-        return self.driver.find_element(*HomePage.electronicsOption)
+        wait = WebDriverWait(self.driver, 15)
+        electronics = wait.until(EC.element_to_be_clickable(HomePage.electronicsOption))
+        return electronics
 
     def getComputerAndAccessoriesOption(self):
-        wait = WebDriverWait(self.driver, 10)
+        wait = WebDriverWait(self.driver, 20)
         computerAndAccessories = self.driver.execute_script("arguments[0].click();", wait.until(
             EC.element_to_be_clickable(HomePage.computerAndAccessoriesOption)))
         return computerAndAccessories
