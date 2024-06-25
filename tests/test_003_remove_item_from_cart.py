@@ -12,8 +12,8 @@ from utilities.BaseClass import BaseClass
 
 class TestOne(BaseClass):
 
-    @allure.title("E2E Test of add to cart functionality")
-    def test_001_add_to_cart_e2e(self):
+    @allure.title("Remove item from Cart")
+    def test_003_remove_item_from_cart(self):
 
         global price
         log = self.getLogger()
@@ -48,14 +48,6 @@ class TestOne(BaseClass):
             raise
         time.sleep(5)
 
-        # Check if Price exist
-        try:
-            price = self.product_price(element=productpage.getPrice())
-        except NoSuchElementException as e:
-            self.capture_screenshot("No Price Exist")
-            allure.attach(str(e), name="Assertion Error", attachment_type=allure.attachment_type.TEXT)
-            raise
-
         # Verify id Add to Cart button exist and click it
         try:
             with allure.step("Verify if Add to Cart Button exist"):
@@ -75,10 +67,15 @@ class TestOne(BaseClass):
         with allure.step("Click the go to Cart Button"):
             productpage.getGoToCartButton().click()
 
-        # Check the Total Price of item from cart
-        subtotal = cartpage.getSubTotal().text.strip()
-        print(subtotal)
+        with allure.step("Click Delete button"):
+            cartpage.getDeleteItemFromCart().click()
 
-        # Verify Item from list has same price as Item in Cart
-        with allure.step("Verify Item from list has same price as Item in Cart"):
-            assert subtotal == f"{price}", "Element does not match"
+        # Verify Item is removed from Cart
+        try:
+            with allure.step("Verify Item is removed from Shopping Cart"):
+                assert cartpage.getEmptyAmazonCart().text.strip() == "Your Amazon Cart is empty.", ("Item not removed "
+                                                                                                    "from Cart")
+        except AssertionError as e:
+            self.capture_screenshot("Item not removed from Cart")
+            allure.attach(str(e), name="Assertion Error", attachment_type=allure.attachment_type.TEXT)
+            raise

@@ -12,8 +12,8 @@ from utilities.BaseClass import BaseClass
 
 class TestOne(BaseClass):
 
-    @allure.title("E2E Test of add to cart functionality")
-    def test_001_add_to_cart_e2e(self):
+    @allure.title("Increase Quantity of Cart")
+    def test_004_increase_quantity(self):
 
         global price
         log = self.getLogger()
@@ -48,19 +48,13 @@ class TestOne(BaseClass):
             raise
         time.sleep(5)
 
-        # Check if Price exist
-        try:
-            price = self.product_price(element=productpage.getPrice())
-        except NoSuchElementException as e:
-            self.capture_screenshot("No Price Exist")
-            allure.attach(str(e), name="Assertion Error", attachment_type=allure.attachment_type.TEXT)
-            raise
-
         # Verify id Add to Cart button exist and click it
         try:
             with allure.step("Verify if Add to Cart Button exist"):
                 element = productpage.getAddToCartButton()
                 assert element is not None, "Element does not exist."
+                productpage.getQuantityDropdown().click()
+                productpage.getQuantityTwo().click()
                 element.click()
         except NoSuchElementException as e:
             self.capture_screenshot("No Add to Cart Button exist")
@@ -75,10 +69,12 @@ class TestOne(BaseClass):
         with allure.step("Click the go to Cart Button"):
             productpage.getGoToCartButton().click()
 
-        # Check the Total Price of item from cart
-        subtotal = cartpage.getSubTotal().text.strip()
-        print(subtotal)
-
         # Verify Item from list has same price as Item in Cart
-        with allure.step("Verify Item from list has same price as Item in Cart"):
-            assert subtotal == f"{price}", "Element does not match"
+        try:
+            with allure.step("Verify Item is removed from Shopping Cart"):
+                assert cartpage.getSubtotalQuantityText().text.strip() == "Subtotal (2 items):", ("Quantity not "
+                                                                                                  "Increased")
+        except AssertionError as e:
+            self.capture_screenshot("Quantity not Increased")
+            allure.attach(str(e), name="Assertion Error", attachment_type=allure.attachment_type.TEXT)
+            raise

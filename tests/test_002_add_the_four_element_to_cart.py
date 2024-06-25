@@ -1,5 +1,7 @@
 import time
 import allure
+from selenium.common import NoSuchElementException
+from selenium.webdriver.common.by import By
 
 from pages.CartPage import CartPage
 from pages.HomePage import HomePage
@@ -10,8 +12,8 @@ from utilities.BaseClass import BaseClass
 
 class TestOne(BaseClass):
 
-    @allure.title("Testing")
-    def test_001_add_to_cart_e2e(self):
+    @allure.title("Add the four element to cart")
+    def test_002_add_the_four_element_to_cart(self):
 
         global price
         log = self.getLogger()
@@ -20,6 +22,7 @@ class TestOne(BaseClass):
         resultspage = ResultsPage(self.driver)
         productpage = ProductPage(self.driver)
         cartpage = CartPage(self.driver)
+
         time.sleep(5)
         with allure.step("Load the homepage"):
             homepage.load()
@@ -43,26 +46,30 @@ class TestOne(BaseClass):
             self.capture_screenshot("Not Enough Results")
             allure.attach(str(e), name="Assertion Error", attachment_type=allure.attachment_type.TEXT)
             raise
+        time.sleep(5)
 
         # Check if Price exist
         try:
             with allure.step("Verify if Product has Price"):
-                price = self.product_price(element=productpage.getPrice())
-        except AssertionError as e:
+                newElement = productpage.getPrice()
+                assert newElement is not None, "Element does not exist."
+                price = self.driver.execute_script("return arguments[0].textContent;", newElement).strip()
+                print(f"The price of the product is: {price}")
+        except NoSuchElementException as e:
             self.capture_screenshot("No Price Exist")
             allure.attach(str(e), name="Assertion Error", attachment_type=allure.attachment_type.TEXT)
             raise
 
-        time.sleep(5)
-
-        # Check if Add to Cart Button exist
-        with allure.step("Check if Add to cart Button exist"):
-            checkAddToCartButton = self.check_exists_by_xpath(xpath=productpage.getAddToCartButtonString())
-
-        if checkAddToCartButton:
-            productpage.getAddToCartButton().click()
-        else:
-            print("Add to Cart button not found")
+        # Verify id Add to Cart button exist and click it
+        try:
+            with allure.step("Verify if Add to Cart Button exist"):
+                element = productpage.getAddToCartButton()
+                assert element is not None, "Element does not exist."
+                element.click()
+        except NoSuchElementException as e:
+            self.capture_screenshot("No Add to Cart Button exist")
+            allure.attach(str(e), name="Assertion Error", attachment_type=allure.attachment_type.TEXT)
+            raise
 
         # Assert if Item is added to Cart
         with allure.step("Verify if Items are added to Cart"):

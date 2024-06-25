@@ -25,13 +25,6 @@ class BaseClass:
         logger.setLevel(logging.DEBUG)
         return logger
 
-    def check_exists_by_xpath(self, xpath):
-        try:
-            self.driver.find_element(By.XPATH, xpath)
-        except NoSuchElementException:
-            return False
-        return True
-
     @staticmethod
     def search_results(num, results):
 
@@ -45,14 +38,14 @@ class BaseClass:
                 result.click()
                 break  # Exit the loop after clicking the 4th result
 
+    def capture_screenshot(self, name):
+        screenshot_path = f"screenshots/{name}.png"
+        self.driver.save_screenshot(screenshot_path)
+        allure.attach.file(screenshot_path, name=name, attachment_type=allure.attachment_type.PNG)
+
     def product_price(self, element):
 
         assert element is not None, "Price element not found."
         price_text = self.driver.execute_script("return arguments[0].textContent;", element).strip()
         print(f"The price of the product is: {price_text}")
         return price_text
-
-    def capture_screenshot(self, name):
-        screenshot_path = f"reports/allure-results/{name}.png"
-        self.driver.save_screenshot(screenshot_path)
-        allure.attach.file(screenshot_path, name=name, attachment_type=allure.attachment_type.PNG)
