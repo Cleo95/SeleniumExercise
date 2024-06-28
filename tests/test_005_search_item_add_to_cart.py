@@ -13,7 +13,7 @@ from utilities.BaseClass import BaseClass
 class TestOne(BaseClass):
 
     @allure.title("E2E Test of add to cart functionality")
-    def test_001_add_to_cart_e2e(self):
+    def test_005_search_item_add_to_cart(self):
 
         global price
         log = self.getLogger()
@@ -29,32 +29,15 @@ class TestOne(BaseClass):
         with allure.step("Load the homepage"):
             homepage.load()
         time.sleep(5)
-        log.info("clicking the All Nav Bar")
-        with allure.step("Get the All Nav bar"):
-            homepage.getAllNavBar().click()
+        log.info("search item")
+        with allure.step("Search specific item"):
+            homepage.getSearchBar().send_keys("computer monitor")
         time.sleep(5)
-        log.info("Click the Electronics Option")
-        with allure.step("Click the Electronics Option"):
-            homepage.getElectronicsOption().click()
+        with allure.step("Click search"):
+            homepage.getSearchIcon().click()
         time.sleep(5)
-
-        log.info("Navigate to Computer and Accessories")
-        with allure.step("Go to Computer And Accessories"):
-            homepage.getComputerAndAccessoriesOption()
-
-        time.sleep(5)
-        results = resultspage.getResults()
-        log.info("Checking if enough search results exist...")
-        # Check if enough results exist
-        try:
-            with allure.step("Verify if enough results exist"):
-                self.search_results(num=4, results=results)
-        except AssertionError as e:
-            self.capture_screenshot("Not Enough Results")
-            allure.attach(str(e), name="Assertion Error", attachment_type=allure.attachment_type.TEXT)
-            log.error(str(e), "Not enough results")
-            raise
-        time.sleep(5)
+        with allure.step("Click search"):
+            resultspage.getSearchResults().click()
 
         # Check if Price exist
         try:

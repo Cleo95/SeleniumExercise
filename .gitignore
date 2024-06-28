@@ -13,3 +13,5 @@ venv/
 ENV/
 # pyenv
 .python-version
+# logfile
+logfile.log

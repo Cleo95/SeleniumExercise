@@ -1,5 +1,5 @@
 import time
-
+import configparser
 import pytest
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
@@ -7,6 +7,10 @@ from selenium.webdriver.chrome.service import Service
 
 driver = None
 
+config = configparser.ConfigParser()
+config.read('config/config.ini')
+
+implicit_wait = config['timeouts']['implicit_wait']
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -23,7 +27,7 @@ def setup(request):
     options.add_experimental_option('useAutomationExtension', False)
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_argument("--headless=new")
+    # options.add_argument("--headless=new")
     options.add_argument("--window-size=1920,1080")
     options.add_argument("--start-fullscreen")
     options.add_argument("start-maximized")
@@ -42,7 +46,7 @@ def setup(request):
         driver = webdriver.Firefox(executable_path="C:\\geckodriver.exe")
     elif browser_name == "IE":
         print("IE driver")
-    driver.implicitly_wait(15)
+    driver.implicitly_wait(float(implicit_wait))
     driver.execute_script("Object.defineProperty(navigator, 'webdriver', {get: () => undefined})")
     request.cls.driver = driver
     yield

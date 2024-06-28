@@ -1,6 +1,12 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import configparser
+
+config = configparser.ConfigParser()
+config.read('config/config.ini')
+
+base_url = config['settings']['base_url']
 
 
 class HomePage:
@@ -11,9 +17,11 @@ class HomePage:
     selectAll = (By.XPATH, "//a[@id='nav-hamburger-menu']")
     electronicsOption = (By.XPATH, "//a[@class='hmenu-item']//div[text()='Electronics']")
     computerAndAccessoriesOption = (By.XPATH, "//a[normalize-space()='Computers & Accessories']")
+    searchBar = (By.XPATH, "//input[@id='twotabsearchtextbox']")
+    searchIcon = (By.XPATH, "//input[@id='nav-search-submit-button']")
 
     def load(self):
-        self.driver.get("https://www.amazon.com/")
+        self.driver.get(base_url)
 
     def getAllNavBar(self):
         wait = WebDriverWait(self.driver, 15)
@@ -30,3 +38,9 @@ class HomePage:
         computerAndAccessories = self.driver.execute_script("arguments[0].click();", wait.until(
             EC.element_to_be_clickable(HomePage.computerAndAccessoriesOption)))
         return computerAndAccessories
+
+    def getSearchBar(self):
+        return self.driver.find_element(*HomePage.searchBar)
+
+    def getSearchIcon(self):
+        return self.driver.find_element(*HomePage.searchIcon)

@@ -1,0 +1,9 @@
+2024-06-28 23:31:10,487 :INFO : test_001_add_to_cart_e2e :Starting test
+2024-06-28 23:31:15,487 :INFO : test_001_add_to_cart_e2e :Loading Home Page
+2024-06-28 23:31:21,910 :INFO : test_001_add_to_cart_e2e :clicking the All Nav Bar
+2024-06-28 23:31:26,953 :INFO : test_001_add_to_cart_e2e :Click the Electronics Option
+2024-06-28 23:31:32,001 :INFO : test_001_add_to_cart_e2e :Navigate to Computer and Accessories
+2024-06-28 23:31:38,211 :INFO : test_001_add_to_cart_e2e :Checking if enough search results exist...
+2024-06-29 01:03:42,096 :INFO : test_005_search_item_add_to_cart :Starting test
+2024-06-29 01:03:47,097 :INFO : test_005_search_item_add_to_cart :Loading Home Page
+2024-06-29 01:03:53,806 :INFO : test_005_search_item_add_to_cart :search item
