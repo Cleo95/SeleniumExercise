@@ -56,17 +56,17 @@ You can run the tests with different browsers by specifying the `--browser_name`
 
 - **Chrome**:
     ```sh
-    pytest --browser_name=chrome
+    pytest --browser_name chrome
     ```
 
 - **Firefox**:
     ```sh
-    pytest --browser_name=firefox
+    pytest --browser_name firefox
     ```
 
 - **Edge**:
     ```sh
-    pytest --browser_name=edge
+    pytest --browser_name edge
     ```
 
 ### Generating Allure Reports
