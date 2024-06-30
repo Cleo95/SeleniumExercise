@@ -1,7 +1,6 @@
 import time
 import allure
 from selenium.common import NoSuchElementException
-from selenium.webdriver.common.by import By
 
 from pages.CartPage import CartPage
 from pages.HomePage import HomePage
