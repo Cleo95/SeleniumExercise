@@ -27,7 +27,7 @@ def setup(request):
     global driver
     browser_name = request.config.getoption("browser_name")
     options = Options()
-    options.add_argument("--headless=new")
+    # options.add_argument("--headless=new")
     options.add_argument("--window-size=1920,1080")
     options.add_argument("start-maximized")
     options.add_argument(
@@ -35,7 +35,7 @@ def setup(request):
         "Chrome/87.0.4280.88 Safari/537.36")
 
     firefoxOptions = FirefoxOptions()
-    firefoxOptions.add_argument("--headless=new")
+    # firefoxOptions.add_argument("--headless=new")
     firefoxOptions.add_argument("--window-size=1920,1080")
     firefoxOptions.add_argument("start-maximized")
     firefoxOptions.add_argument(
@@ -43,7 +43,7 @@ def setup(request):
         "Chrome/87.0.4280.88 Safari/537.36")
 
     edgeOptions = EdgeOptions()
-    edgeOptions.add_argument("--headless=new")
+    # edgeOptions.add_argument("--headless=new")
     edgeOptions.add_argument("--window-size=1920,1080")
     edgeOptions.add_argument("start-maximized")
     edgeOptions.add_argument(
